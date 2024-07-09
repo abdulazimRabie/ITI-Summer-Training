@@ -61,6 +61,29 @@ having count(*) > 1)
 
 
 -- 10
+select Country.Name , Count(*) as 'Number of Cities'
+from Country join City on Country.Code = City.CountryCode
+where Country.Population > 1000000000
+group by Country.Name
+
+-- 11
 select Name from Country
-where Population > 1000000000
-select * from City
+where Population in 
+(select max(Population) from Country)
+
+-- 12
+create table WaterResource (
+	ID int identity primary key,
+	CountryCode char(3),
+	Type varchar(10),
+	Name varchar(20)
+
+	constraint water_country_fk
+	foreign key (CountryCode) references Country(Code)
+)
+
+-- 13
+insert into WaterResource(CountryCode, Type, Name)
+values('EGY', 'River', 'Nile River')
+
+select * from WaterResource
